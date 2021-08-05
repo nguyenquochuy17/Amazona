@@ -3,13 +3,14 @@ import { AppBar, Toolbar, IconButton, Badge, Button, Typography, Grid } from '@m
 import { ShoppingCart, AccountCircle } from '@material-ui/icons'
 import logo from '../../images/logo.png'
 import useStyles from './styles'
+import { Link } from 'react-router-dom'
 const NavBar = () => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
-                    <Typography variant='h6' color="inherit" className={classes.logoTitle}>
+                    <Typography component={Link} to="/" variant='h6' color="inherit" className={classes.logoTitle}>
                         <img src={logo} alt="Commerce.js" height="50px" className={classes.image} />
                         FITNEZZ
                     </Typography>
@@ -19,7 +20,7 @@ const NavBar = () => {
                                 <Button variant="text" color="inherit" >Home</Button>
                             </Grid>
                             <Grid item  >
-                                <Button color="inherit" >About</Button>
+                                <Button component={Link} to="/product/3" color="inherit" >About</Button>
                             </Grid  >
                             <Grid item >
                                 <Button color="inherit" >Contact</Button>
