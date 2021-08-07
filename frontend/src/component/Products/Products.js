@@ -12,7 +12,6 @@ const Products = () => {
     console.log(loading, error, products)
 
     useEffect(() => {
-        console.log("Rendering use effect")
         dispatch(listProducts())
     }, [dispatch])
     const classes = useStyles()

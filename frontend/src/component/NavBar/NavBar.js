@@ -4,7 +4,9 @@ import { ShoppingCart, AccountCircle } from '@material-ui/icons'
 import logo from '../../images/logo.png'
 import useStyles from './styles'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 const NavBar = () => {
+    const cartItems = useSelector(state => state.cart.cartItems)
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -35,8 +37,8 @@ const NavBar = () => {
                             <AccountCircle />
                         </Badge>
                     </IconButton>
-                    <IconButton aria-label="Show cart items" color="inherit">
-                        <Badge color="secondary">
+                    <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
+                        <Badge badgeContent={cartItems.length} color="secondary">
                             <ShoppingCart />
                         </Badge>
                     </IconButton>

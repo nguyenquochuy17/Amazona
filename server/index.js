@@ -1,8 +1,18 @@
 import express from 'express'
-
+import data from './data.js'
 const app = express()
 
-app.get('/api/products/', (req, res) => {
+
+app.get('/api/products/:id', (req, res) => {
+    console.log("hehe")
+    const product = data.products.find((x) => x._id === req.params.id)
+    if (product) {
+        res.send(product)
+    } else {
+        res.status(404).send({ message: 'Product not found' })
+    }
+})
+app.get('/api/products', (req, res) => {
     res.send([
         {
             _id: '1',
@@ -82,6 +92,8 @@ app.get('/api/products/', (req, res) => {
 app.get('/', (req, res) => {
     res.send('Sever is ready as f sdsd s sd')
 })
+
+
 const port = process.env.PORT || 5000
 
 app.listen(port, () => {
