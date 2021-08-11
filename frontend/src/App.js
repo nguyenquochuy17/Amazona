@@ -6,6 +6,8 @@ import ProductDetail from './component/Products/Product/ProductDetail/ProductDet
 import SignIn from './component/SignIn/SignIn';
 import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import Cart from './component/Cart/Cart';
+import Register from './component/Register/Register';
+import Shipping from './component/Shipping/Shipping';
 function App() {
   return (
     <Router>
@@ -16,6 +18,8 @@ function App() {
           <Route path="/product/:id" exact component={ProductDetail} />
           <Route path="/cart" exact component={Cart} />
           <Route path="/signin" exact component={SignIn} />
+          <Route path="/register" exact component={Register} />
+          <Route path="/shipping" exact component={Shipping} />
         </Switch>
       </div>
     </Router>

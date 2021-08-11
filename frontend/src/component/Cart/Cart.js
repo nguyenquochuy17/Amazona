@@ -15,11 +15,10 @@ import { removeAllItems, removeCartItems, updateCartItems } from "../../actions/
 import useStyles from "./styles";
 import {
     Dialog, DialogActions,
-    DialogContent,
-    DialogContentText,
     DialogTitle,
     Slide
 } from '@material-ui/core';
+import CartNav from "../CartNav/CartNav";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -27,8 +26,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Cart = () => {
     const classes = useStyles();
     const cartItemsOld = useSelector((state) => state.cart.cartItems);
-    const navBar = ["1. Cart", "2. Detail", "3. Payment", "4. Review"];
-    const [countButton, setCountButton] = useState(0);
     const dispatch = useDispatch();
     const [errorQuantity, setErrorQuantity] = useState(false);
     const [removeItem, setRemoveItem] = useState(null)
@@ -106,42 +103,9 @@ const Cart = () => {
                         Can not choose 0 quantity!
                     </Alert>
                 </Snackbar>
-                <Grid container>
+                <Grid container justifyContent="center">
                     <Grid item sm={12} md={8}>
-                        <Box
-                            display="flex"
-                            mb={5}
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            {navBar.map((name, index) => (
-                                <>
-                                    <Button
-                                        variant="contained"
-                                        className={
-                                            index === 3
-                                                ? classes.disabledButton
-                                                : countButton >= index
-                                                    ? classes.buttonNavActive
-                                                    : classes.buttonNav
-                                        }
-                                        size="small"
-                                        onClick={() => {
-                                            index < 3 && setCountButton(index);
-                                        }}
-                                    >
-                                        {name}
-                                    </Button>
-                                    {index < 3 && (
-                                        <Box
-                                            className={
-                                                countButton > index ? classes.lineActive : classes.line
-                                            }
-                                        ></Box>
-                                    )}
-                                </>
-                            ))}
-                        </Box>
+                        <CartNav current={1} />
                     </Grid>
                 </Grid>
                 <Box ml={6} mr={6}>
@@ -334,6 +298,8 @@ const Cart = () => {
                                         variant="contained"
                                         color="secondary"
                                         style={{ width: "100%" }}
+                                        component={goBackCart}
+                                        to="/signin?require=shipping"
                                     >
                                         CHECK OUT
                                     </Button>

@@ -14,7 +14,6 @@ mongoose.connect('mongodb://localhost/amazola', {
     useNewUrlParser: true,
 })
 
-
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.get('/', (req, res) => {
