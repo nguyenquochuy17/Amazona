@@ -1,13 +1,67 @@
-import React from 'react';
-import { AppBar, Toolbar, IconButton, Badge, Button, Typography, Grid } from '@material-ui/core'
+import React, { useState } from 'react';
+import { AppBar, Toolbar, IconButton, Badge, Button, Typography, Grid, Avatar, withStyles } from '@material-ui/core'
 import { ShoppingCart, AccountCircle } from '@material-ui/icons'
+import Menu from '@material-ui/core/Menu';
 import logo from '../../images/logo.png'
 import useStyles from './styles'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { signout } from '../../actions/userActions';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const NavBar = () => {
+    const dispatch = useDispatch()
     const cartItems = useSelector(state => state.cart.cartItems)
+    const userSignIn = useSelector((state) => state.userSignIn)
+    const { userInfo } = userSignIn
+    const signoutHandler = () => {
+        dispatch(signout())
+        setAnchorEl(null)
+    }
     const classes = useStyles();
+    const StyledMenu = withStyles({
+        paper: {
+            border: '1px solid #d3d4d5',
+        },
+    })((props) => (
+        <Menu
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+            }}
+            {...props}
+        />
+    ));
+    const StyledMenuItem = withStyles((theme) => ({
+        root: {
+            '&:focus': {
+                backgroundColor: theme.palette.primary.main,
+                '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                    color: theme.palette.common.white,
+                },
+            },
+        },
+    }))(MenuItem);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const open = Boolean(anchorEl);
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
     return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.appBar}>
@@ -22,7 +76,7 @@ const NavBar = () => {
                                 <Button variant="text" color="inherit" >Home</Button>
                             </Grid>
                             <Grid item  >
-                                <Button component={Link} to="/product/3" color="inherit" >About</Button>
+                                <Button color="inherit" >About</Button>
                             </Grid  >
                             <Grid item >
                                 <Button color="inherit" >Contact</Button>
@@ -42,7 +96,37 @@ const NavBar = () => {
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
-                    <Button variant="outlined" color="inherit" className={classes.login}>Login</Button>
+                    {userInfo ? (
+                        <div>
+                            <Avatar onClick={handleClick} aria-controls="customized-menu"
+                                aria-haspopup="true" className={classes.pink} alt={userInfo.name}>{userInfo.name.charAt(0)}
+                            </Avatar>
+                            <StyledMenu
+                                id="customized-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={open}
+                                onClose={handleClose}
+                            >
+                                <StyledMenuItem>
+                                    <ListItemIcon>
+                                        <AccountCircleIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="My Profile" />
+                                </StyledMenuItem>
+                                <StyledMenuItem onClick={signoutHandler}>
+                                    <ListItemIcon>
+                                        <ExitToAppIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Sign Out" />
+                                </StyledMenuItem>
+
+                            </StyledMenu>
+                        </div>
+                    )
+                        :
+                        <Button component={Link} to="/signin" variant="outlined" color="inherit" className={classes.login}>Login</Button>
+                    }
                 </Toolbar>
             </AppBar>
         </div >
