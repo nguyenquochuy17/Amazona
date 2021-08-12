@@ -1,17 +1,103 @@
 import { Box, Button, Divider, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link as changeURL } from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as changeURL, useHistory } from "react-router-dom";
+import { saveShippingAddress } from '../../actions/cartActions';
 import CartNav from '../CartNav/CartNav';
 
 const Shipping = () => {
-    const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", ward: "", district: "", city: "", country: "" })
+    const history = useHistory()
+    const userSignIn = useSelector(state => state.userSignIn)
+    const [errorForm, setErrorForm] = useState({})
+    const { userInfo } = userSignIn
+    const cart = useSelector(state => state.cart)
+    const { shippingAddress } = cart
+    if (!userInfo) {
+        history.push('/signin')
+    }
+    const [form, setForm] = useState({ name: shippingAddress.name, phone: shippingAddress.phone, email: shippingAddress.email, address: shippingAddress.address, ward: shippingAddress.ward, district: shippingAddress.district, city: shippingAddress.city, country: shippingAddress.country })
     const cartItemsOld = useSelector((state) => state.cart.cartItems);
+    const dispatch = useDispatch()
+
     const handleDataForm = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
+
+    const handleValidation = () => {
+        var error = {}
+        var validate = true
+        if (!form.name) {
+            error["name"] = "Name is required"
+            validate = false
+        } else {
+            if (!form.name.match(/^[a-zA-Z]+$/)) {
+                validate = false;
+                error["name"] = "Only letters";
+            }
+        }
+        if (!form.phone) {
+            error["phone"] = "Phone is required"
+            validate = false
+        } else {
+            if (!form.phone.match(/^[0-9]{10}$/)) {
+                error["phone"] = "Phone must be ten digits"
+                validate = false
+            }
+        }
+        if (!form.email) {
+            error["email"] = "Email is required"
+            validate = false
+        } else {
+            let lastAtPos = form.email.lastIndexOf('@');
+            let lastDotPos = form.email.lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && form.email.indexOf('@@') == -1 && lastDotPos > 2 && (form.email.length - lastDotPos) > 2)) {
+                error["email"] = "Email is not valid ( must have @ and . )";
+                validate = false
+            }
+        }
+        if (!form.address) {
+            error["address"] = "Address is required"
+            validate = false
+        }
+        if (!form.ward) {
+            error["ward"] = "Ward is required"
+            validate = false
+        }
+        if (!form.city) {
+            error["city"] = "City is required"
+            validate = false
+        }
+        if (!form.district) {
+            error["district"] = "District is required"
+            validate = false
+        }
+        if (!form.country) {
+            error["country"] = "Country is required"
+            validate = false
+        }
+        setErrorForm(error)
+        return validate
+    }
+    const handleOnSubmit = () => {
+        console.log(form.name)
+        if (handleValidation()) {
+            dispatch(saveShippingAddress(form))
+            history.push('/payment')
+        }
+    }
+    const subTotal = (cartItemsOld.length !== 0 ? (cartItemsOld
+        .map((item) => +item.price * +item.qty)
+        .reduce((a, b) => a + b)) : 0)
+    const tax = subTotal * 0.1
+    const total = tax + subTotal
+    if (cartItemsOld.length === 0) {
+        history.push('/cart')
+    }
     return (
         <Box mt={3}>
+            {console.log("1234")}
             <CartNav current={2} />
             <Box ml={6} mr={6}>
                 <Grid container spacing={5}>
@@ -40,8 +126,10 @@ const Shipping = () => {
                                                     onChange={handleDataForm}
                                                     fullWidth
                                                     autoFocus
-
                                                 />
+                                                {errorForm?.name && (
+                                                    <Alert severity="warning">{errorForm.name}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
@@ -52,8 +140,11 @@ const Shipping = () => {
                                                     value={form.phone}
                                                     onChange={handleDataForm}
                                                     fullWidth
-
                                                 />
+                                                {errorForm?.phone && (
+                                                    <Alert severity="warning">{errorForm.phone}</Alert>
+                                                )}
+
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
@@ -64,8 +155,10 @@ const Shipping = () => {
                                                     value={form.email}
                                                     onChange={handleDataForm}
                                                     fullWidth
-
                                                 />
+                                                {errorForm?.email && (
+                                                    <Alert severity="warning">{errorForm.email}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
@@ -77,6 +170,9 @@ const Shipping = () => {
                                                     fullWidth
                                                     required
                                                 />
+                                                {errorForm?.address && (
+                                                    <Alert severity="warning">{errorForm.address}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
@@ -87,8 +183,10 @@ const Shipping = () => {
                                                     value={form.ward}
                                                     onChange={handleDataForm}
                                                     fullWidth
-
                                                 />
+                                                {errorForm?.ward && (
+                                                    <Alert severity="warning">{errorForm.ward}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField required
@@ -98,6 +196,9 @@ const Shipping = () => {
                                                     value={form.district}
                                                     onChange={handleDataForm}
                                                     fullWidth />
+                                                {errorForm?.district && (
+                                                    <Alert severity="warning">{errorForm.district}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
@@ -108,8 +209,10 @@ const Shipping = () => {
                                                     value={form.city}
                                                     onChange={handleDataForm}
                                                     fullWidth
-
                                                 />
+                                                {errorForm?.city && (
+                                                    <Alert severity="warning">{errorForm.city}</Alert>
+                                                )}
                                             </Grid>
                                             <Grid item xs={12} sm={6} style={{ marginBottom: "30px" }}>
                                                 <TextField
@@ -121,6 +224,9 @@ const Shipping = () => {
                                                     onChange={handleDataForm}
                                                     fullWidth
                                                 />
+                                                {errorForm?.country && (
+                                                    <Alert severity="warning">{errorForm.country}</Alert>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Box>
@@ -134,16 +240,43 @@ const Shipping = () => {
                                 <Grid container>
                                     <Grid item xs="6" container justifyContent="flex-start">
                                         <Grid item>
-                                            <Typography variant="h5">Total</Typography>
+                                            <Typography variant="h6">Subtotal:</Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs="6" container justifyContent="flex-end">
                                         <Grid item>
-                                            <Typography variant="h5">
+                                            <Typography variant="h6">
                                                 $
-                                                {cartItemsOld
-                                                    .map((item) => +item.price * +item.qty)
-                                                    .reduce((a, b) => a + b)}
+                                                {subTotal}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs="6" container justifyContent="flex-start">
+                                        <Grid item>
+                                            <Typography variant="h6">Tax:</Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs="6" container justifyContent="flex-end">
+                                        <Grid item>
+                                            <Typography variant="h6">
+                                                $
+                                                {tax}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs="6" container justifyContent="flex-start">
+                                        <Grid item>
+                                            <Typography variant="h6">Shipping:</Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs="6" container justifyContent="flex-end">
+                                        <Grid item>
+                                            <Typography variant="h6">
+                                                free
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -151,15 +284,37 @@ const Shipping = () => {
                                 <Box my={2}>
                                     <Divider variant="middle"></Divider>
                                 </Box>
-                                <Button
-                                    component={changeURL}
-                                    to="/signin?redirect=shipping"
-                                    variant="contained"
-                                    color="secondary"
-                                    style={{ width: "100%" }}
-                                >
-                                    PROCESS TO PAYMENT
-                                </Button>
+                                <Grid container>
+                                    <Grid item xs="12" container justifyContent="flex-end">
+                                        <Grid item>
+                                            <Typography variant="h5">
+                                                $
+                                                {total}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid container justifyContent="space-between">
+                                    <Button
+                                        component={changeURL}
+                                        to="/signin?redirect=shipping"
+                                        variant="outlined"
+                                        color="secondary"
+                                    >
+                                        Back To Cart
+                                    </Button>
+                                    <Button
+                                        component={changeURL}
+                                        variant="contained"
+                                        color="secondary"
+
+                                        onClick={handleOnSubmit}
+                                    >
+                                        Continue
+                                    </Button>
+
+                                </Grid>
+
                             </Box>
                         </Paper>
                     </Grid>
