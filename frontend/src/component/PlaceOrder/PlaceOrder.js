@@ -1,4 +1,3 @@
-
 import { Box, Button, Divider, FormControlLabel, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
@@ -9,31 +8,24 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CartNav from '../CartNav/CartNav';
-import useStyle from './styles.js'
 import { savePaymentMethod } from '../../actions/cartActions';
-const Payment = () => {
+const PlaceOrder = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const userSignIn = useSelector(state => state.userSignIn)
-    const { shippingAddress } = useSelector(state => state.cart)
-    const classes = useStyle()
-    const { userInfo } = userSignIn
-    if (!userInfo) {
-        history.push('/signin')
-    }
-    if (!shippingAddress.address) {
-        history.push('/shipping')
-    }
+    const { shippingAddress, paymentMethod, cartItems } = useSelector(state => state.cart)
+    // const { userInfo } = userSignIn
+    // if (!userInfo) {
+    //     history.push('/signin')
+    // }
+    // if (!shippingAddress.address) {
+    //     history.push('/shipping')
+    // }
     const cartItemsOld = useSelector((state) => state.cart.cartItems);
-    const [value, setValue] = useState('COD');
 
-    const handleOnChange = (e) => {
-        setValue(e.target.value);
-    }
 
     const handleOnSubmit = () => {
-        dispatch(savePaymentMethod(value));
-        history.push('/placeorder')
+        // dispatch(savePaymentMethod(value));
     }
 
     const subTotal = (cartItemsOld.length !== 0 ? (cartItemsOld
@@ -46,30 +38,44 @@ const Payment = () => {
     }
     return (
         <Box mt={3}>
-            <CartNav current={3} />
+            <CartNav current={4} />
             <Box ml={6} mr={6}>
                 <Grid container spacing={5}>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item xs={12} md={9}>
                         <Box marginBottom={3}>
-                            <Paper elevation={3} style={{ padding: '50px' }}>
-                                <FormControl component="fieldset" style={{ width: '100%' }}>
-                                    <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleOnChange} >
-                                        <FormControlLabel value="COD" control={<Radio />} label="Cash On Delivery" />
-                                        <Box my={5} style={{ width: '100%' }}>
-                                            <Divider variant="middle"></Divider>
+                            <Paper elevation={3} style={{ padding: '30px' }}>
+                                <Typography variant="h6" style={{ color: '#f73471' }}>Shipping</Typography>
+                                <Box mt={2}>
+                                    <Typography gutterBottom><span style={{ fontWeight: '700' }}>Name: </span > {shippingAddress.name}</Typography>
+                                    <Typography gutterBottom><span style={{ fontWeight: '700' }}>Address: </span > {shippingAddress.address}, {shippingAddress.ward}, District {shippingAddress.district}, {shippingAddress.city}, {shippingAddress.country}</Typography>
+                                </Box>
+                            </Paper>
+                        </Box>
+                        <Box marginBottom={3}>
+                            <Paper elevation={3} style={{ padding: '30px' }}>
+                                <Typography variant="h6" style={{ color: '#f73471' }}>Payment</Typography>
+                                <Box mt={2}>
+                                    <Typography gutterBottom><span style={{ fontWeight: '700' }}>Method: </span > {paymentMethod}</Typography>
+                                </Box>
+                            </Paper>
+                        </Box>
+                        <Box marginBottom={3}>
+                            <Paper elevation={3} style={{ padding: '30px' }}>
+                                <Typography variant="h6" style={{ color: '#f73471' }}>Order Items</Typography>
+                                <Box mt={2}>
+                                    {cartItems.map(item => (
+                                        <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+                                            <img src={item.image} width="100" height="100" />
+                                            <Typography>{item.name}</Typography>
+                                            <Typography>{item.qty} x ${item.price} = ${item.price * item.qty}</Typography>
                                         </Box>
-                                        <FormControlLabel value="Momo" control={<Radio />} label="Pay with MoMo" />
-                                        {value == "Momo" &&
-                                            <Box display="flex" justifyContent="center" >
-                                                <img src="/momo.png" width="40%" className={classes.picture} />
-                                            </Box>
-                                        }
-                                    </RadioGroup>
-                                </FormControl>
+                                    ))}
+
+                                </Box>
                             </Paper>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} md={3}>
                         <Paper>
                             <Box p={2}>
                                 <Grid container>
@@ -133,7 +139,7 @@ const Payment = () => {
                                     <Grid item xs="12" md="6">
                                         <Button
                                             component={changeURL}
-                                            to="/shipping"
+                                            to="/payment"
                                             variant="outlined"
                                             color="secondary"
                                             style={{ width: "100%" }}
@@ -148,7 +154,7 @@ const Payment = () => {
                                             style={{ width: "100%" }}
                                             onClick={handleOnSubmit}
                                         >
-                                            Continue
+                                            Order
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -164,4 +170,5 @@ const Payment = () => {
     )
 }
 
-export default Payment
+export default PlaceOrder
+

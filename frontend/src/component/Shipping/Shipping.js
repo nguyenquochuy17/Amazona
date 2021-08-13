@@ -90,14 +90,13 @@ const Shipping = () => {
     const subTotal = (cartItemsOld.length !== 0 ? (cartItemsOld
         .map((item) => +item.price * +item.qty)
         .reduce((a, b) => a + b)) : 0)
-    const tax = subTotal * 0.1
+    const tax = subTotal * 10 / 100
     const total = tax + subTotal
     if (cartItemsOld.length === 0) {
         history.push('/cart')
     }
     return (
         <Box mt={3}>
-            {console.log("1234")}
             <CartNav current={2} />
             <Box ml={6} mr={6}>
                 <Grid container spacing={5}>
@@ -294,25 +293,28 @@ const Shipping = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid container justifyContent="space-between">
-                                    <Button
-                                        component={changeURL}
-                                        to="/signin?redirect=shipping"
-                                        variant="outlined"
-                                        color="secondary"
-                                    >
-                                        Back To Cart
-                                    </Button>
-                                    <Button
-                                        component={changeURL}
-                                        variant="contained"
-                                        color="secondary"
-
-                                        onClick={handleOnSubmit}
-                                    >
-                                        Continue
-                                    </Button>
-
+                                <Grid container spacing={1}>
+                                    <Grid item xs="12" md="6">
+                                        <Button
+                                            component={changeURL}
+                                            to="/cart"
+                                            variant="outlined"
+                                            color="secondary"
+                                            style={{ width: "100%" }}
+                                        >
+                                            Back
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs="12" md="6">
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            style={{ width: "100%" }}
+                                            onClick={handleOnSubmit}
+                                        >
+                                            Continue
+                                        </Button>
+                                    </Grid>
                                 </Grid>
 
                             </Box>

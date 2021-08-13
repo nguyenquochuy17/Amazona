@@ -26,9 +26,6 @@ const Product = ({ product }) => {
                 title="Paella dish"
             />
             <CardContent className={classes.cardContent}>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    {product.description}
-                </Typography>
                 <Box display="flex" alignItems="center" mt={1} >
                     <Box borderColor="transparent">
                         <Rating name="read-only" value={product.rating} precision={0.5} readOnly />

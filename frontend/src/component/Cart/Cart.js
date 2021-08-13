@@ -50,6 +50,7 @@ const Cart = () => {
 
     const handleClose1 = () => {
         setOpen(false);
+        setRemoveItem(null)
     };
 
 
@@ -81,7 +82,6 @@ const Cart = () => {
                     <DialogActions>
                         <Button variant="outlined" onClick={() => {
                             handleClose1()
-                            setRemoveItem(null)
                         }} color="primary">
                             Disagree
                         </Button>

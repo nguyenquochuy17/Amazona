@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import Cart from './component/Cart/Cart';
 import Register from './component/Register/Register';
 import Shipping from './component/Shipping/Shipping';
+import Payment from './component/Payment/Payment'
+import PlaceOrder from './component/PlaceOrder/PlaceOrder';
 function App() {
   return (
     <Router>
@@ -20,6 +22,8 @@ function App() {
           <Route path="/signin" exact component={SignIn} />
           <Route path="/register" exact component={Register} />
           <Route path="/shipping" exact component={Shipping} />
+          <Route path="/payment" exact component={Payment} />
+          <Route path="/placeorder" exact component={PlaceOrder} />
         </Switch>
       </div>
     </Router>

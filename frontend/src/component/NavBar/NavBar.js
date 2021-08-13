@@ -4,7 +4,7 @@ import { ShoppingCart, AccountCircle } from '@material-ui/icons'
 import Menu from '@material-ui/core/Menu';
 import logo from '../../images/logo.png'
 import useStyles from './styles'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { signout } from '../../actions/userActions';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,13 +12,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { removeAllItems } from '../../actions/cartActions';
 const NavBar = () => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const cartItems = useSelector(state => state.cart.cartItems)
     const userSignIn = useSelector((state) => state.userSignIn)
     const { userInfo } = userSignIn
     const signoutHandler = () => {
         dispatch(signout())
+        dispatch(removeAllItems())
+        history.push('/')
         setAnchorEl(null)
     }
     const classes = useStyles();

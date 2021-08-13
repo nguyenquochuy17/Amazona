@@ -25,7 +25,6 @@ const ProductDetail = () => {
         if (reason === 'clickaway') {
             return;
         }
-
         setSuccessMsg(false);
     };
 
