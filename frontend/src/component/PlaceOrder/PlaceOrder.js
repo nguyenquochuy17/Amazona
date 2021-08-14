@@ -1,45 +1,63 @@
 import { Box, Button, Divider, FormControlLabel, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as changeURL, useHistory } from "react-router-dom";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import { CircularProgress } from '@material-ui/core'
 import CartNav from '../CartNav/CartNav';
+import useStyles from './styles'
 import { savePaymentMethod } from '../../actions/cartActions';
+import { createOrder } from '../../actions/orderActions';
+import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
 const PlaceOrder = () => {
     const history = useHistory()
+    const classes = useStyles()
     const dispatch = useDispatch()
     const userSignIn = useSelector(state => state.userSignIn)
     const { shippingAddress, paymentMethod, cartItems } = useSelector(state => state.cart)
-    // const { userInfo } = userSignIn
-    // if (!userInfo) {
-    //     history.push('/signin')
-    // }
-    // if (!shippingAddress.address) {
-    //     history.push('/shipping')
-    // }
-    const cartItemsOld = useSelector((state) => state.cart.cartItems);
-
+    const cart = useSelector((state) => state.cart);
+    const { userInfo } = userSignIn
+    const orderCreate = useSelector(state => state.orderCreate)
+    const { loading, success, error, order } = orderCreate
+    if (!userInfo) {
+        history.push('/signin')
+    }
+    if (!shippingAddress.address) {
+        history.push('/shipping')
+    }
+    if (!paymentMethod) {
+        history.push('/payment')
+    }
 
     const handleOnSubmit = () => {
-        // dispatch(savePaymentMethod(value));
+        dispatch(createOrder({ ...cart, orderItems: cartItems }));
     }
-
-    const subTotal = (cartItemsOld.length !== 0 ? (cartItemsOld
+    const subTotal = (cartItems.length !== 0 ? (cartItems
         .map((item) => +item.price * +item.qty)
         .reduce((a, b) => a + b)) : 0)
+    cart.itemsPrice = subTotal
     const tax = subTotal * 10 / 100
+    cart.taxPrice = tax
     const total = tax + subTotal
-    if (cartItemsOld.length === 0) {
+    cart.totalPrice = total
+
+    if (cartItems.length === 0) {
         history.push('/cart')
     }
+    useEffect(() => {
+        if (success) {
+            history.push(`/order/${order._id}`)
+            dispatch({ type: ORDER_CREATE_RESET })
+        }
+    }, [success, dispatch, history, order])
     return (
         <Box mt={3}>
-            <CartNav current={4} />
             <Box ml={6} mr={6}>
+                <Grid container  >
+                    <Grid item xs={12} md={9} className={classes.cartNav}>
+                        <CartNav current={4} />
+                    </Grid>
+                </Grid>
                 <Grid container spacing={5}>
                     <Grid item xs={12} md={9}>
                         <Box marginBottom={3}>
@@ -157,6 +175,8 @@ const PlaceOrder = () => {
                                             Order
                                         </Button>
                                     </Grid>
+                                    {loading && <CircularProgress color="secondary" />}
+                                    {error && <Alert severity="error">{error}</Alert>}
                                 </Grid>
 
                             </Box>

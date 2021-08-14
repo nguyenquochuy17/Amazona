@@ -21,7 +21,6 @@ const NavBar = () => {
     const { userInfo } = userSignIn
     const signoutHandler = () => {
         dispatch(signout())
-        dispatch(removeAllItems())
         history.push('/')
         setAnchorEl(null)
     }
@@ -96,7 +95,7 @@ const NavBar = () => {
                         </Badge>
                     </IconButton>
                     <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
-                        <Badge badgeContent={cartItems.length} color="secondary">
+                        <Badge badgeContent={cartItems && cartItems.length} color="secondary">
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
@@ -112,7 +111,7 @@ const NavBar = () => {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <StyledMenuItem>
+                                <StyledMenuItem component={Link} to="/userprofile">
                                     <ListItemIcon>
                                         <AccountCircleIcon fontSize="small" />
                                     </ListItemIcon>

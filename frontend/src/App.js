@@ -10,6 +10,8 @@ import Register from './component/Register/Register';
 import Shipping from './component/Shipping/Shipping';
 import Payment from './component/Payment/Payment'
 import PlaceOrder from './component/PlaceOrder/PlaceOrder';
+import UserProfile from './component/Profile/UserProfile/UserProfile';
+import OrderDetails from './component/OrderDetails/OrderDetails';
 function App() {
   return (
     <Router>
@@ -24,6 +26,8 @@ function App() {
           <Route path="/shipping" exact component={Shipping} />
           <Route path="/payment" exact component={Payment} />
           <Route path="/placeorder" exact component={PlaceOrder} />
+          <Route path="/userprofile" exact component={UserProfile} />
+          <Route path="/order/:id" exact component={OrderDetails} />
         </Switch>
       </div>
     </Router>

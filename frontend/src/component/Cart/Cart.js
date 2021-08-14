@@ -103,20 +103,21 @@ const Cart = () => {
                         Can not choose 0 quantity!
                     </Alert>
                 </Snackbar>
-                <Grid container justifyContent="center">
-                    <Grid item sm={12} md={8}>
-                        <CartNav current={1} />
-                    </Grid>
-                </Grid>
+
                 <Box ml={6} mr={6}>
+                    <Grid container  >
+                        <Grid item xs={12} md={9} className={classes.cartNav}>
+                            <CartNav current={1} />
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={5}>
-                        <Grid item xs={12} sm={9}>
+                        <Grid item xs={12} md={9}>
                             <Box marginBottom={3}>
                                 <Paper elevation={3}>
                                     <Box>
                                         <Grid container alignItems="center">
-                                            <Grid item xs="2"></Grid>
-                                            <Grid item xs="2" container justifyContent="center">
+                                            <Grid item xs="2" className={classes.displayNone}></Grid>
+                                            <Grid item xs="2" container className={classes.displayNone}>
                                                 <Grid item>
                                                     <Typography
                                                         variant="h6"
@@ -126,7 +127,7 @@ const Cart = () => {
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs="2" container justifyContent="center">
+                                            <Grid item xs="2" container className={classes.displayNone}>
                                                 <Grid item mx="auto">
                                                     <Typography
                                                         variant="h6"
@@ -136,7 +137,7 @@ const Cart = () => {
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs="3" container justifyContent="center">
+                                            <Grid item xs="3" container className={classes.displayNone}>
                                                 <Grid item mx="auto">
                                                     <Typography
                                                         variant="h6"
@@ -146,7 +147,7 @@ const Cart = () => {
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs="2" container justifyContent="center">
+                                            <Grid item xs="2" container className={classes.displayNone}>
                                                 <Grid item mx="auto">
                                                     <Typography
                                                         variant="h6"
@@ -156,7 +157,7 @@ const Cart = () => {
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs="1" container justifyContent="center">
+                                            <Grid item xs="12" lg={1} container alignItems="center" >
                                                 <Grid item mx="auto">
                                                     <Tooltip title="Remove all items">
                                                         <IconButton onClick={handleClickOpen} aria-label="delete">
@@ -164,6 +165,7 @@ const Cart = () => {
                                                         </IconButton>
                                                     </Tooltip>
                                                 </Grid>
+                                                <Typography style={{ color: "#f73471" }} className={classes.displayText}>Remove all items</Typography>
                                             </Grid>
                                         </Grid>
                                     </Box>
@@ -174,26 +176,26 @@ const Cart = () => {
                                 <Box marginBottom={3}>
                                     <Paper elevation={3}>
                                         <Box p={2}>
-                                            <Grid container alignItems="center">
-                                                <Grid item xs="2">
+                                            <Grid container alignItems="center" spacing={1}>
+                                                <Grid item lg="2" xs={2} >
                                                     <img
                                                         src={item.image}
                                                         alt="hihi"
-                                                        width="150px"
-                                                        height="150px"
+                                                        width="100%"
+
                                                     ></img>
                                                 </Grid>
-                                                <Grid item xs="2" container justifyContent="center">
-                                                    <Grid item>
-                                                        <Typography variant="h5">{item.name}</Typography>
-                                                    </Grid>
+                                                <Grid item lg="2" xs={10}>
+
+                                                    <Typography variant="h5">{item.name}</Typography>
+
                                                 </Grid>
-                                                <Grid item xs="2" container justifyContent="center">
+                                                <Grid item lg="2" xs={3} container justifyContent="center">
                                                     <Grid item mx="auto">
                                                         <Typography variant="h5">${item.price}</Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid item xs="3" container justifyContent="center">
+                                                <Grid item lg="3" xs={3} container justifyContent="center">
                                                     <Grid item mx="auto">
                                                         <ButtonGroup>
                                                             <Button
@@ -246,14 +248,14 @@ const Cart = () => {
                                                         </ButtonGroup>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid item xs="2" container justifyContent="center">
+                                                <Grid item lg="2" xs={3} container justifyContent="center">
                                                     <Grid item mx="auto">
                                                         <Typography variant="h5">
                                                             ${item.price * item.qty}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid item xs="1" container justifyContent="center">
+                                                <Grid item lg="1" xs={3} container justifyContent="center">
                                                     <Grid item mx="auto">
                                                         <IconButton onClick={() => {
                                                             handleClickOpen()
@@ -271,7 +273,7 @@ const Cart = () => {
                         </Grid>
 
                         {/* RIGHT SIDE TOTAL PRICE */}
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} md={3}>
                             <Paper>
                                 <Box p={2}>
                                     <Grid container>

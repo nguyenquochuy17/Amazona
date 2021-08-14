@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link as changeURL, useHistory } from "react-router-dom";
 import { saveShippingAddress } from '../../actions/cartActions';
 import CartNav from '../CartNav/CartNav';
-
+import useStyles from './styles'
 const Shipping = () => {
     const history = useHistory()
+    const classes = useStyles()
     const userSignIn = useSelector(state => state.userSignIn)
     const [errorForm, setErrorForm] = useState({})
     const { userInfo } = userSignIn
@@ -97,10 +98,14 @@ const Shipping = () => {
     }
     return (
         <Box mt={3}>
-            <CartNav current={2} />
             <Box ml={6} mr={6}>
+                <Grid container  >
+                    <Grid item xs={12} md={9} className={classes.cartNav}>
+                        <CartNav current={2} />
+                    </Grid>
+                </Grid>
                 <Grid container spacing={5}>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item xs={12} md={9}>
                         <Box marginBottom={3}>
                             <Paper elevation={3}>
                                 <Box>
@@ -233,7 +238,7 @@ const Shipping = () => {
                             </Paper>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} md={3}>
                         <Paper>
                             <Box p={2}>
                                 <Grid container>

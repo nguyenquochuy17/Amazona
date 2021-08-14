@@ -15,7 +15,7 @@ const Payment = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const userSignIn = useSelector(state => state.userSignIn)
-    const { shippingAddress } = useSelector(state => state.cart)
+    const { shippingAddress, paymentMethod } = useSelector(state => state.cart)
     const classes = useStyle()
     const { userInfo } = userSignIn
     if (!userInfo) {
@@ -25,7 +25,8 @@ const Payment = () => {
         history.push('/shipping')
     }
     const cartItemsOld = useSelector((state) => state.cart.cartItems);
-    const [value, setValue] = useState('COD');
+
+    const [value, setValue] = useState(paymentMethod || 'COD');
 
     const handleOnChange = (e) => {
         setValue(e.target.value);
@@ -46,10 +47,14 @@ const Payment = () => {
     }
     return (
         <Box mt={3}>
-            <CartNav current={3} />
             <Box ml={6} mr={6}>
+                <Grid container  >
+                    <Grid item xs={12} md={9} className={classes.cartNav}>
+                        <CartNav current={3} />
+                    </Grid>
+                </Grid>
                 <Grid container spacing={5}>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item xs={12} md={9}>
                         <Box marginBottom={3}>
                             <Paper elevation={3} style={{ padding: '50px' }}>
                                 <FormControl component="fieldset" style={{ width: '100%' }}>
@@ -69,7 +74,7 @@ const Payment = () => {
                             </Paper>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} md={3}>
                         <Paper>
                             <Box p={2}>
                                 <Grid container>
@@ -161,6 +166,7 @@ const Payment = () => {
                 </Grid>
             </Box>
         </Box>
+
     )
 }
 

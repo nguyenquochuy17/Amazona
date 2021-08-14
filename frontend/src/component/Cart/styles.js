@@ -1,6 +1,30 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
+    cartNav: {
+        [theme.breakpoints.up('sm')]: {
+            display: "flex",
+            justifyContent: "center"
+        }
+    },
+    displayNone: {
+        [theme.breakpoints.down('lg')]: {
+            display: "none"
+        },
+        [theme.breakpoints.up('lg')]: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center"
+        },
+    },
+    displayText: {
+        [theme.breakpoints.down('lg')]: {
+            display: "block"
+        },
+        [theme.breakpoints.up('lg')]: {
+            display: "none"
+        },
+    },
     container: {
         padding: "3rem 8rem 0rem 8rem"
     },
