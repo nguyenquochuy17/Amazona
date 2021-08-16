@@ -75,11 +75,11 @@ const NavBar = () => {
                     </Typography>
                     <Typography className={classes.itemsWrapper} >
                         <Grid container justifyContent="center" spacing={5} >
-                            <Grid item>
-                                <Button variant="text" color="inherit" >Home</Button>
+                            <Grid item >
+                                <Button component={Link} to="/" variant="text" color="inherit" >Home</Button>
                             </Grid>
-                            <Grid item  >
-                                <Button color="inherit" >About</Button>
+                            <Grid item>
+                                <Button component={Link} to="/products" color="inherit" >Product</Button>
                             </Grid  >
                             <Grid item >
                                 <Button color="inherit" >Contact</Button>
@@ -111,7 +111,7 @@ const NavBar = () => {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <StyledMenuItem component={Link} to="/userprofile">
+                                <StyledMenuItem component={Link} to="/userprofile" onClick={handleClose}>
                                     <ListItemIcon>
                                         <AccountCircleIcon fontSize="small" />
                                     </ListItemIcon>

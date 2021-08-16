@@ -60,7 +60,7 @@ const Cart = () => {
             <Box mt={3} m={3}>
                 <Alert severity="error">
                     Your Cart is Empty!{" "}
-                    <Link component={goBackCart} to="/">
+                    <Link component={goBackCart} to="/products">
                         Go back the product
                     </Link>
                 </Alert>

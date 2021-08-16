@@ -3,7 +3,12 @@ import expressAsyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import { isAuth } from '../utils.js'
 
-const orderRouter = express.Router()
+const orderRouter = express.Router();
+
+orderRouter.get('/mine', isAuth, expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id })
+    res.send(orders)
+}))
 
 orderRouter.post('/', isAuth, expressAsyncHandler(async (req, res) => {
     if (req.body.orderItems.length === 0) {
@@ -32,5 +37,6 @@ orderRouter.get('/:id', isAuth, expressAsyncHandler(async (req, res) => {
         res.status(400).send({ message: 'Order Not Found' })
     }
 }))
+
 
 export default orderRouter

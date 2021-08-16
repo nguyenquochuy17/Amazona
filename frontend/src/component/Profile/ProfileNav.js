@@ -4,15 +4,16 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link as changeURL, useHistory } from "react-router-dom";
+import { Link as changeURL, useHistory, useLocation } from "react-router-dom";
 import useStyles from './styles'
 
 const ProfileNav = ({ current }) => {
     const classes = useStyles()
     const history = useHistory()
+    const location = useLocation()
     const { userInfo } = useSelector(state => state.userSignIn)
     if (!userInfo) {
-        history.push("/signin?redirect=userprofile");
+        history.push(`/signin?redirect=${location.pathname.slice(1)}`)
     }
     return (
         <Paper>

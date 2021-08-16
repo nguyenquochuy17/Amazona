@@ -1,29 +1,46 @@
-import { Box, FormControl, FormLabel, Grid, Paper, TextField, Typography, RadioGroup, FormControlLabel, Radio, Button } from '@material-ui/core';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Box, FormControl, FormLabel, Grid, Paper, TextField, Typography, RadioGroup, FormControlLabel, Radio, Button, CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { detailsUser, updateUserProfile } from '../../../actions/userActions';
+import { USER_UPDATE_PROFILE_RESET } from '../../../constants/userConstants';
 import ProfileNav from '../ProfileNav';
 import useStyles from './styles'
 const UserProfile = () => {
     const classes = useStyles()
+    const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.userSignIn)
-    userInfo.gender = userInfo ? "true" : "false"
-    const [dataForm, setDataForm] = useState(userInfo);
+    const { loading, error, user } = useSelector(state => state.userDetails)
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = userUpdateProfile
+
+    const [dataForm, setDataForm] = useState({ name: "", email: "", gender: "", password: "", confirmPassword: "" });
+
     const handleDataForm = (e) => {
         setDataForm({ ...dataForm, [e.target.name]: e.target.value });
     };
-    function changeGender(value) {
-        switch (value) {
-            case "true":
-                return true
-            case "false":
-                return false
-            default:
-                break;
-        }
-    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (dataForm.password !== dataForm.confirmPassword) {
+            alert('Password and Confirm Password is not match')
+        } else {
+            dispatch(updateUserProfile({ ...dataForm, userId: user._id }))
+        }
     }
+
+    useEffect(() => {
+        if (!user && userInfo) {
+            dispatch({ type: USER_UPDATE_PROFILE_RESET })
+            dispatch(detailsUser(userInfo._id))
+        } else {
+            if (user) {
+                let gender1 = user.gender ? "true" : "false"
+                setDataForm({ ...user, gender: gender1, password: "", confirmPassword: "" })
+            }
+        }
+    }, [dispatch, user, userInfo._id])
+
     return (
         <Box mt={5.5}>
             <Box ml={6} mr={6}>
@@ -33,8 +50,11 @@ const UserProfile = () => {
                         <ProfileNav current={1}></ProfileNav>
                     </Grid>
 
-
-                    <Grid item xs={12} md={9}>
+                    {loading ? (
+                        <CircularProgress color="secondary" />
+                    ) : error ? (
+                        <Alert severity="error">{error}</Alert>
+                    ) : (<Grid item xs={12} md={9}>
                         <Box marginBottom={3}>
                             <Paper elevation={3} style={{ padding: "30px" }}>
                                 <Typography
@@ -43,6 +63,9 @@ const UserProfile = () => {
                                 >
                                     Account Information
                                 </Typography>
+                                {loadingUpdate && <CircularProgress color="secondary" />}
+                                {errorUpdate && <Alert severity="error">{errorUpdate}</Alert>}
+                                {successUpdate && <Alert severity="success">Updated Success</Alert>}
                                 <form noValidate onSubmit={handleSubmit}>
 
                                     <TextField
@@ -113,11 +136,11 @@ const UserProfile = () => {
                                     >
                                         Update
                                     </Button>
-
                                 </form>
                             </Paper>
                         </Box>
                     </Grid>
+                    )}
                 </Grid>
             </Box>
         </Box>
