@@ -1,6 +1,6 @@
-import { USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_RESET, USER_UPDATE_PROFILE_SUCCESS } from "../constants/userConstants"
 import axios from 'axios'
 import { CART_EMPTY } from "../constants/cardConstants"
+import { USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS } from "../constants/userConstants"
 export const signin = (email, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } })
     try {
@@ -24,6 +24,7 @@ export const register = (name, email, password, gender) => async (dispatch) => {
         const { data } = await axios.post('/api/users/register', { name, email, password, gender })
         dispatch({ type: USER_REGISTER_SUCCESS, payload: data })
         dispatch({ type: USER_SIGNIN_SUCCESS, payload: data })
+        dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
         localStorage.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
         dispatch({
@@ -76,7 +77,8 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         dispatch({
             type: USER_SIGNIN_SUCCESS, payload: data
         })
-        localStorage.getItem('userInfo', JSON.stringify(data))
+        dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
+        localStorage.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL, payload: error.response && error.response.data.message

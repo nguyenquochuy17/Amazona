@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailsUser, updateUserProfile } from '../../../actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '../../../constants/userConstants';
+
 import ProfileNav from '../ProfileNav';
 import useStyles from './styles'
 const UserProfile = () => {
@@ -11,21 +12,39 @@ const UserProfile = () => {
     const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.userSignIn)
     const { loading, error, user } = useSelector(state => state.userDetails)
-    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = userUpdateProfile
-
+    const [err, setErr] = useState({})
     const [dataForm, setDataForm] = useState({ name: "", email: "", gender: "", password: "", confirmPassword: "" });
-
+    const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = useSelector(state => state.userUpdateProfile)
     const handleDataForm = (e) => {
         setDataForm({ ...dataForm, [e.target.name]: e.target.value });
     };
 
+    function changeGender(value) {
+        switch (value) {
+            case "true":
+                return true
+            case "false":
+                return false
+            default:
+                break;
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        const err = {}
+        let valid = true
         if (dataForm.password !== dataForm.confirmPassword) {
-            alert('Password and Confirm Password is not match')
-        } else {
-            dispatch(updateUserProfile({ ...dataForm, userId: user._id }))
+            err["password"] = "Password and Confirm Password is not match"
+            valid = false
+        }
+        if (!dataForm.name) {
+            err["name"] = "Name is required"
+            valid = false
+        }
+        setErr(err)
+        if (valid) {
+            dispatch(updateUserProfile({ userId: user._id, name: dataForm.name, gender: changeGender(dataForm.gender), email: dataForm.email, password: dataForm.password }))
         }
     }
 
@@ -39,7 +58,7 @@ const UserProfile = () => {
                 setDataForm({ ...user, gender: gender1, password: "", confirmPassword: "" })
             }
         }
-    }, [dispatch, user, userInfo._id])
+    }, [dispatch, user, userInfo._id, userInfo])
 
     return (
         <Box mt={5.5}>
@@ -63,9 +82,19 @@ const UserProfile = () => {
                                 >
                                     Account Information
                                 </Typography>
+
+
                                 {loadingUpdate && <CircularProgress color="secondary" />}
-                                {errorUpdate && <Alert severity="error">{errorUpdate}</Alert>}
-                                {successUpdate && <Alert severity="success">Updated Success</Alert>}
+                                {errorUpdate && <Box mt={3} m={3} >
+                                    <Alert severity="error">
+                                        {errorUpdate}
+                                    </Alert>
+                                </Box>}
+                                {successUpdate && <Box mt={3} m={3} >
+                                    <Alert severity="success">
+                                        Updated Successfully
+                                    </Alert>
+                                </Box>}
                                 <form noValidate onSubmit={handleSubmit}>
 
                                     <TextField
@@ -81,6 +110,7 @@ const UserProfile = () => {
                                         onChange={handleDataForm}
                                         autoComplete="name"
                                     />
+                                    {err["name"] && <Alert severity="error">{err["name"]}</Alert>}
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -91,7 +121,7 @@ const UserProfile = () => {
                                         name="email"
                                         value={dataForm.email}
                                         autoComplete="email"
-
+                                        onChange={handleDataForm}
                                     />
 
                                     <TextField
@@ -120,6 +150,7 @@ const UserProfile = () => {
                                         onChange={handleDataForm}
                                         autoComplete="current-password"
                                     />
+                                    {err["password"] && <Alert severity="error">{err["password"]}</Alert>}
                                     <FormControl style={{ marginTop: "10px" }} component="fieldset">
                                         <FormLabel component="legend">Gender</FormLabel>
                                         <RadioGroup aria-label="gender" name="gender" value={dataForm.gender} onChange={handleDataForm}>
