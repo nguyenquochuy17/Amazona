@@ -70,7 +70,6 @@ const NavBar = () => {
             <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
                     <Typography component={Link} to="/" variant='h6' color="inherit" className={classes.logoTitle}>
-                        <img src={logo} alt="Commerce.js" height="50px" className={classes.image} />
                         FITNEZZ
                     </Typography>
                     <Typography className={classes.itemsWrapper} >
@@ -89,11 +88,6 @@ const NavBar = () => {
                             </Grid>
                         </Grid>
                     </Typography>
-                    <IconButton aria-label="Show cart items" color="inherit">
-                        <Badge color="secondary">
-                            <AccountCircle />
-                        </Badge>
-                    </IconButton>
                     <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
                         <Badge badgeContent={cartItems && cartItems.length} color="secondary">
                             <ShoppingCart />
