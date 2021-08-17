@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { register, signin } from '../../actions/userActions';
+import { register } from '../../actions/userActions';
 import { useHistory } from 'react-router-dom';
 import { CircularProgress, FormControl, FormLabel, Radio, RadioGroup } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert';
@@ -60,7 +60,7 @@ export default function Register(props) {
     }
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        if (form.confirmPassword != form.password || form.password === '') {
+        if (form.confirmPassword !== form.password || form.password === '') {
             setCheckPassword(true)
         } else {
             dispatch(register(form.name, form.email, form.password, changeGender(form.gender)))
@@ -75,7 +75,7 @@ export default function Register(props) {
         if (userInfo) {
             history.push(redirect)
         }
-    }, [userInfo])
+    }, [history, redirect, userInfo])
 
     return (
         <Container component="main" maxWidth="xs">

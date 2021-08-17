@@ -1,16 +1,14 @@
 
-import { Box, Button, Divider, FormControlLabel, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
-import Alert from '@material-ui/lab/Alert';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link as changeURL, useHistory } from "react-router-dom";
+import { Box, Button, Divider, FormControlLabel, Grid, Paper, Typography } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import CartNav from '../CartNav/CartNav';
-import useStyle from './styles.js'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as changeURL, useHistory } from "react-router-dom";
 import { savePaymentMethod } from '../../actions/cartActions';
+import CartNav from '../CartNav/CartNav';
+import useStyle from './styles.js';
 const Payment = () => {
     const history = useHistory()
     const dispatch = useDispatch()
@@ -64,9 +62,9 @@ const Payment = () => {
                                             <Divider variant="middle"></Divider>
                                         </Box>
                                         <FormControlLabel value="Momo" control={<Radio />} label="Pay with MoMo" />
-                                        {value == "Momo" &&
+                                        {value === "Momo" &&
                                             <Box display="flex" justifyContent="center" >
-                                                <img src="/momo.png" width="40%" className={classes.picture} />
+                                                <img alt="logo" src="/momo.png" width="40%" className={classes.picture} />
                                             </Box>
                                         }
                                     </RadioGroup>

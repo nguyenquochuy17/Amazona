@@ -215,7 +215,7 @@ const Cart = () => {
                                                                 className={classes.input}
                                                                 type="number"
                                                                 name="qty"
-                                                                value={item.qty == 0 ? null : item.qty}
+                                                                value={item.qty === 0 ? null : item.qty}
 
                                                                 onChange={(e) => {
                                                                     handleUpdateItem(item, +e.target.value)

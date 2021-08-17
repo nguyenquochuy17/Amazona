@@ -2,12 +2,11 @@ import { Box, Button, CircularProgress, Divider, Grid, Paper, Typography } from 
 import Alert from '@material-ui/lab/Alert';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as changeURL, useHistory, useParams } from "react-router-dom";
+import { Link as changeURL, useParams } from "react-router-dom";
 import { detailsOrder } from '../../actions/orderActions';
 
 const OrderDetails = () => {
     const { id } = useParams()
-    const history = useHistory()
     const dispatch = useDispatch()
     const { order, loading, error } = useSelector((state) => state.orderDetails)
     useEffect(() => {

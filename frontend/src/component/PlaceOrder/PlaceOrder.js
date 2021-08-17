@@ -1,14 +1,12 @@
-import { Box, Button, Divider, FormControlLabel, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { Box, Button, CircularProgress, Divider, Grid, Paper, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as changeURL, useHistory } from "react-router-dom";
-import { CircularProgress } from '@material-ui/core'
-import CartNav from '../CartNav/CartNav';
-import useStyles from './styles'
-import { savePaymentMethod } from '../../actions/cartActions';
 import { createOrder } from '../../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
+import CartNav from '../CartNav/CartNav';
+import useStyles from './styles';
 const PlaceOrder = () => {
     const history = useHistory()
     const classes = useStyles()
@@ -83,7 +81,7 @@ const PlaceOrder = () => {
                                 <Box mt={2}>
                                     {cartItems.map(item => (
                                         <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-                                            <img src={item.image} width="100" height="100" />
+                                            <img alt="product" src={item.image} width="100" height="100" />
                                             <Typography>{item.name}</Typography>
                                             <Typography>{item.qty} x ${item.price} = ${item.price * item.qty}</Typography>
                                         </Box>

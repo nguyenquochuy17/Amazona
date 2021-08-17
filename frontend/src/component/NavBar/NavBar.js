@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Badge, Button, Typography, Grid, Avatar, withStyles } from '@material-ui/core'
-import { ShoppingCart, AccountCircle } from '@material-ui/icons'
-import Menu from '@material-ui/core/Menu';
-import logo from '../../images/logo.png'
-import useStyles from './styles'
-import { Link, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
-import { signout } from '../../actions/userActions';
+import { AppBar, Avatar, Badge, Button, Grid, IconButton, Toolbar, Typography, withStyles } from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { ShoppingCart } from '@material-ui/icons';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { removeAllItems } from '../../actions/cartActions';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { signout } from '../../actions/userActions';
+import useStyles from './styles';
 const NavBar = () => {
     const dispatch = useDispatch()
     const history = useHistory()

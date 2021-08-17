@@ -53,7 +53,7 @@ const Shipping = () => {
             let lastAtPos = form.email.lastIndexOf('@');
             let lastDotPos = form.email.lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && form.email.indexOf('@@') == -1 && lastDotPos > 2 && (form.email.length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && form.email.indexOf('@@') === -1 && lastDotPos > 2 && (form.email.length - lastDotPos) > 2)) {
                 error["email"] = "Email is not valid ( must have @ and . )";
                 validate = false
             }
