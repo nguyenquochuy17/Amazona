@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { pink } from '@material-ui/core/colors';
 export default makeStyles((theme) => ({
     appBar: {
         backgroundColor: "black",
@@ -25,7 +24,7 @@ export default makeStyles((theme) => ({
         marginRight: '10px'
     },
     pink: {
-        color: theme.palette.getContrastText(pink[300]),
-        backgroundColor: pink[300],
+        color: "white",
+        backgroundColor: "#f73471",
     },
 }));
